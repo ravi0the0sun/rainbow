@@ -122,7 +122,7 @@ const GasSpeedButton = ({
     selectedGasPrice,
     txFees,
     updateCustomValues,
-    updateGasPriceOption,
+    updateGasSpeedOption,
   } = useGas();
 
   const gasPricesAvailable = useMemo(() => {
@@ -172,13 +172,13 @@ const GasSpeedButton = ({
     async price => {
       try {
         await updateCustomValues(price);
-        updateGasPriceOption(GasSpeedOptions.CUSTOM);
+        updateGasSpeedOption(GasSpeedOptions.CUSTOM);
       } catch (e) {
         setEstimatedTimeValue(0);
         setEstimatedTimeUnit('min');
       }
     },
-    [updateCustomValues, updateGasPriceOption]
+    [updateCustomValues, updateGasSpeedOption]
   );
 
   useEffect(() => {
@@ -228,8 +228,8 @@ const GasSpeedButton = ({
     const nextSpeedIndex = (currentSpeedIndex + 1) % gasOptions?.length;
 
     const nextSpeed = gasOptions[nextSpeedIndex];
-    updateGasPriceOption(nextSpeed);
-  }, [gasSpeedOption, inputFocused, options, updateGasPriceOption]);
+    updateGasSpeedOption(nextSpeed);
+  }, [gasSpeedOption, inputFocused, options, updateGasSpeedOption]);
 
   const formatAnimatedGasPrice = useCallback(
     animatedPrice =>

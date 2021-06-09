@@ -98,7 +98,7 @@ export default function SendSheet(props) {
     stopPollingGasPrices,
     txFees,
     updateDefaultGasLimit,
-    updateGasPriceOption,
+    updateGasSpeedOption,
     updateTxFee,
   } = useGas();
   const isDismissing = useRef(false);
@@ -404,12 +404,12 @@ export default function SendSheet(props) {
       gasUtils.showTransactionSpeedOptions(
         gasPrices,
         txFees,
-        gasPriceOption => updateGasPriceOption(gasPriceOption),
+        gasPriceOption => updateGasSpeedOption(gasPriceOption),
         onSuccess,
         hideCustom
       );
     },
-    [txFees, gasPrices, updateGasPriceOption]
+    [txFees, gasPrices, updateGasSpeedOption]
   );
 
   const onLongPressSend = useCallback(() => {
