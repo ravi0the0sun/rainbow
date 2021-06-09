@@ -8,20 +8,27 @@ import {
   sortBy,
   upperFirst,
 } from 'lodash';
+import { GasPrices, GasSpeedOption, TxFees } from '@rainbow-me/entities';
 import { showActionSheetWithOptions } from '@rainbow-me/utils';
 
-const CUSTOM = 'custom';
-const FAST = 'fast';
-const NORMAL = 'normal';
-const SLOW = 'slow';
+const GasSpeedOrder = [
+  GasSpeedOption.SLOW,
+  GasSpeedOption.NORMAL,
+  GasSpeedOption.FAST,
+  GasSpeedOption.CUSTOM,
+];
 
-const GasSpeedOrder = [SLOW, NORMAL, FAST, CUSTOM];
+interface GasSpeedItem {
+  gweiValue: string;
+  label: string;
+  speed: GasSpeedOption;
+}
 
 const showTransactionSpeedOptions = (
-  gasPrices,
-  txFees,
-  updateGasOption,
-  onSuccess,
+  gasPrices: GasPrices,
+  txFees: TxFees,
+  updateGasOption: (arg0: GasSpeedOption) => void,
+  onSuccess: () => void,
   hideCustom = false
 ) => {
   const options = [
@@ -35,9 +42,9 @@ const showTransactionSpeedOptions = (
       cancelButtonIndex,
       options: options.map(property('label')),
     },
-    buttonIndex => {
+    (buttonIndex: number) => {
       if (buttonIndex !== undefined && buttonIndex !== cancelButtonIndex) {
-        const selectedGasPriceItem = options[buttonIndex];
+        const selectedGasPriceItem = options[buttonIndex] as GasSpeedItem;
         updateGasOption(selectedGasPriceItem.speed);
         analytics.track('Updated Gas Price', {
           gasPrice: selectedGasPriceItem.gweiValue,
@@ -51,10 +58,14 @@ const showTransactionSpeedOptions = (
   );
 };
 
-const formatGasSpeedItems = (gasPrices, txFees, hideCustom = false) => {
+const formatGasSpeedItems = (
+  gasPrices: GasPrices,
+  txFees: TxFees,
+  hideCustom = false
+): GasSpeedItem[] => {
   let allSpeeds = GasSpeedOrder;
   if (hideCustom) {
-    allSpeeds = allSpeeds.filter(speed => speed !== CUSTOM);
+    allSpeeds = allSpeeds.filter(speed => speed !== GasSpeedOption.CUSTOM);
   }
   const gasItems = map(allSpeeds, speed => {
     const cost = get(txFees, `[${speed}].txFee.native.value.display`);
@@ -71,10 +82,6 @@ const formatGasSpeedItems = (gasPrices, txFees, hideCustom = false) => {
 };
 
 export default {
-  CUSTOM,
-  FAST,
   GasSpeedOrder,
-  NORMAL,
   showTransactionSpeedOptions,
-  SLOW,
 };
