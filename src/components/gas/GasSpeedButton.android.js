@@ -152,12 +152,12 @@ const GasSpeedButton = ({
   const { nativeCurrencySymbol, nativeCurrency } = useAccountSettings();
   const {
     gasPrices,
-    updateCustomValues,
+    gasSpeedOption,
     isSufficientGas,
-    updateGasPriceOption,
     selectedGasPrice,
-    selectedGasPriceOption,
     txFees,
+    updateCustomValues,
+    updateGasPriceOption,
   } = useGas();
 
   const gasPricesAvailable = useMemo(() => {
@@ -210,7 +210,7 @@ const GasSpeedButton = ({
 
     setEstimatedTimeValue(estimatedTime[0] || 0);
     setEstimatedTimeUnit(estimatedTime[1] || 'min');
-  }, [selectedGasPrice, selectedGasPriceOption]);
+  }, [gasSpeedOption, selectedGasPrice]);
 
   const calculateCustomPriceEstimatedTime = useCallback(
     async price => {
@@ -268,12 +268,12 @@ const GasSpeedButton = ({
     }
     LayoutAnimation.easeInEaseOut();
     const gasOptions = options || GasSpeedOrder;
-    const currentSpeedIndex = gasOptions?.indexOf(selectedGasPriceOption);
+    const currentSpeedIndex = gasOptions?.indexOf(gasSpeedOption);
     const nextSpeedIndex = (currentSpeedIndex + 1) % gasOptions?.length;
 
     const nextSpeed = gasOptions[nextSpeedIndex];
     updateGasPriceOption(nextSpeed);
-  }, [inputFocused, options, selectedGasPriceOption, updateGasPriceOption]);
+  }, [gasSpeedOption, inputFocused, options, updateGasPriceOption]);
 
   const formatAnimatedGasPrice = useCallback(
     animatedPrice =>
@@ -287,7 +287,7 @@ const GasSpeedButton = ({
     const gasPriceGwei = get(selectedGasPrice, 'value.display');
     let timeSymbol = '~';
 
-    if (selectedGasPriceOption === GasSpeedOptions.CUSTOM) {
+    if (gasSpeedOption === GasSpeedOptions.CUSTOM) {
       if (!customGasPriceInput) {
         return `${formatAnimatedGasPrice(
           defaultCustomGasPriceUsd
@@ -331,8 +331,8 @@ const GasSpeedButton = ({
     formatAnimatedGasPrice,
     gasPrice,
     gasPricesAvailable,
+    gasSpeedOption,
     selectedGasPrice,
-    selectedGasPriceOption,
     type,
   ]);
 
@@ -451,7 +451,7 @@ const GasSpeedButton = ({
   ]);
 
   const focusOnInput = useCallback(() => inputRef.current?.focus(), []);
-  const isCustom = selectedGasPriceOption === GasSpeedOptions.CUSTOM;
+  const isCustom = gasSpeedOption === GasSpeedOptions.CUSTOM;
 
   const { navigate } = useNavigation();
 
@@ -563,7 +563,7 @@ const GasSpeedButton = ({
       >
         <Row align="end" css={margin(3, 0)} justify="end" marginBottom={1}>
           <GasSpeedLabelPager
-            label={selectedGasPriceOption}
+            label={gasSpeedOption}
             options={options}
             showPager={!inputFocused}
             theme={theme}
