@@ -11,7 +11,7 @@ import {
 import { GasPrices, GasSpeedOption, TxFees } from '@rainbow-me/entities';
 import { showActionSheetWithOptions } from '@rainbow-me/utils';
 
-const GasSpeedOrder = [
+const GasSpeedOrder: GasSpeedOption[] = [
   GasSpeedOption.SLOW,
   GasSpeedOption.NORMAL,
   GasSpeedOption.FAST,
