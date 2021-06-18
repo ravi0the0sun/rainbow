@@ -68,9 +68,9 @@ const formatGasSpeedItems = (
     allSpeeds = allSpeeds.filter(speed => speed !== GasSpeedOption.CUSTOM);
   }
   const gasItems = map(allSpeeds, speed => {
-    const cost = get(txFees, `[${speed}].txFee.native.value.display`);
+    const cost = txFees?.[speed]?.native?.value?.display;
     const gwei = get(gasPrices, `[${speed}].value.display`);
-    const time = get(gasPrices, `[${speed}].estimatedTime.display`);
+    const time = gasPrices?.[speed]?.estimatedTime?.display;
 
     return {
       gweiValue: gwei,
