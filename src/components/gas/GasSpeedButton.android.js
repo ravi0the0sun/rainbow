@@ -167,7 +167,7 @@ const GasSpeedButton = ({
 
     const filteredGasPrices = {};
     options.forEach(speed => {
-      filteredGasPrices[speed] = gasPrices[speed];
+      filteredGasPrices[speed] = gasPrices?.[speed];
     });
     return filteredGasPrices;
   }, [gasPrices, minGasPrice, options]);
@@ -252,7 +252,7 @@ const GasSpeedButton = ({
         size="lmedium"
         weight="bold"
       >
-        {isEmpty(gasPricesAvailable) ||
+        {!gasPricesAvailable ||
         isEmpty(txFees) ||
         typeof isSufficientGas === 'undefined'
           ? 'Loading...'
@@ -292,7 +292,7 @@ const GasSpeedButton = ({
         return `${formatAnimatedGasPrice(
           defaultCustomGasPriceUsd
         )} ~ ${defaultCustomGasConfirmationTime}`;
-      } else if (gasPricesAvailable[GasSpeedOptions.CUSTOM]?.value) {
+      } else if (gasPricesAvailable?.[GasSpeedOptions.CUSTOM]?.value) {
         const priceInWei = Number(
           gasPricesAvailable[GasSpeedOptions.CUSTOM].value.amount
         );
